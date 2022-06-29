@@ -2,5 +2,5 @@
 
 
 @section('content')
-home
+Comics
 @endsection
