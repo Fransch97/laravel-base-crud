@@ -2,6 +2,13 @@
 
 @section('content')
 <div class="container">
+
+    @if(session('deleted'))
+        <div class="alert alert-success" role="alert">
+            {{ session('deleted') }}
+        </div>
+    @endif
+
     <table class="table">
         <thead>
           <tr>
@@ -23,6 +30,7 @@
             <td></td>
             <td>
                 <form
+                onsubmit="return confirm('U sure?')"
                 action="{{route('comics.destroy', $comic->id)}}"
                 method="POST"
                 >
