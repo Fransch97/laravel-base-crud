@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 use App\Comic;
 class ComicsSeeder extends Seeder
 {
@@ -18,6 +19,7 @@ class ComicsSeeder extends Seeder
             $comic->title = $data->title;
             $comic->image = $data->image;
             $comic->type = $data->type;
+            $comic->slug = Str::slug($data->title, '-');
             $comic->save();
 
         }

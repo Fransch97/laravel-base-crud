@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Comic;
 class ComicsController extends Controller
 {
@@ -15,7 +16,7 @@ class ComicsController extends Controller
     {
         $comics = Comic::all();
         // dump($comics);
-        return view('comics.comic', compact('comics'));
+        return view('comics.index', compact('comics'));
     }
 
     /**
@@ -25,7 +26,7 @@ class ComicsController extends Controller
      */
     public function create()
     {
-        return view('comics.addcomic');
+        return view('comics.create');
     }
 
     /**
@@ -37,11 +38,11 @@ class ComicsController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+        $data['slug'] = $this->slug($data['title']);
 
         $new_comic = new Comic;
-        $new_comic->title = $data['title'];
-        $new_comic->image = $data['image'];
-        $new_comic->type = $data['type'];
+        $new_comic->fill($data);
+        $new_comic->slug = $data['slug'];
         $new_comic->save();
 
         return redirect()->route('comics.show', $new_comic->id);
@@ -103,4 +104,25 @@ class ComicsController extends Controller
         $comic->delete();
         return redirect()->route('comics.index')->with('deleted','Cancellato corretamente');
     }
+
+
+
+
+
+
+    private function slug($string){
+        $slug = Str::slug($string , '-');
+        $control_slug = Comic::where('slug', $slug)->first();
+        $i = 0;
+        while($control_slug){
+            $slug = Str::slug($string , '-') . '-' .  $i;
+            $i++;
+            $control_slug = Comic::where('slug', $slug)->first();
+        }
+        return $slug;
+    }
+
+
+
+
 }
