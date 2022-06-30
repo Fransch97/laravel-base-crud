@@ -69,9 +69,10 @@ class ComicsController extends Controller
     {
         $data = Comic::find($id);
 
-        // if($data){
-        //     return view('comics.edit', compact('data'));
-        // }
+        if($data){
+            return view('comics.edit', compact('data'));
+        }
+
         abort(404, 'Fumetto non trovato');
     }
 
@@ -82,8 +83,13 @@ class ComicsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Comic $comic)
     {
+        // dump($request);
+        $get_data = $request->all();
+        // dump($get_data);
+        $comic->update($get_data);
+        return redirect()->route('comics.show', $comic);
     }
 
     /**
