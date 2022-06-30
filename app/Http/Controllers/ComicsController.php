@@ -68,7 +68,11 @@ class ComicsController extends Controller
     public function edit($id)
     {
         $data = Comic::find($id);
-        return view('comics.edit', compact('data'));
+
+        // if($data){
+        //     return view('comics.edit', compact('data'));
+        // }
+        abort(404, 'Fumetto non trovato');
     }
 
     /**
